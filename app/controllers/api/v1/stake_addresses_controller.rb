@@ -15,7 +15,7 @@ class Api::V1::StakeAddressesController < ApplicationController
 
     addresses = addresses.as_json
     addresses.each do |address|
-      address["ada_amount"] /= 1_000_000
+      address["ada_amount"] /= 1_000_000.0
       address["ada_amount_in_eur"] = RateHelper.amount_in_eur(address["ada_amount"])
       address["ada_amount_in_usd"] = RateHelper.amount_in_usd(address["ada_amount"])
     end
