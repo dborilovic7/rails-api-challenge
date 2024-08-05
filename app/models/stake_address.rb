@@ -1,5 +1,6 @@
 class StakeAddress < ApplicationRecord
   self.table_name = "stake_address"
+  self.per_page = 10
 
   has_many :epoch_stakes,
             primary_key: :id,
