@@ -40,4 +40,12 @@ module RateHelper
   def self.amount_in_usd(amount)
     (amount * @@ada_usd).round(2)
   end
+
+  def self.eur_to_ada(amount)
+    amount / @@ada_eur
+  end
+
+  def self.usd_to_ada(amount)
+    amount / @@ada_usd
+  end
 end

@@ -10,7 +10,7 @@ class Api::V1::StakeAddressesController < ApplicationController
     @output = { stake_addresses: [] }
 
     page = addresses_params[:page] || 1
-    addresses = StakeAddress.display.paginate(page: page)
+    addresses = StakeAddress.search(addresses_params).paginate(page: page)
     total_pages = addresses.total_pages
 
     addresses = addresses.as_json
@@ -29,6 +29,7 @@ class Api::V1::StakeAddressesController < ApplicationController
   end
 
   def addresses_params
-    params.permit(:page)
+    params.permit(:page, :address, :min_ada_amount, :max_ada_amount, :min_ada_amount_in_eur,
+                  :max_ada_amount_in_eur, :min_ada_amount_in_usd, :max_ada_amount_in_usd)
   end
 end

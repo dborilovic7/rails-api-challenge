@@ -15,4 +15,18 @@ class StakeAddress < ApplicationRecord
     .where("amount >= ?", TaskHelper::LOVELACE_MIN_AMOUNT)
     .where("amount <= ?", TaskHelper::LOVELACE_MAX_AMOUNT)
   end
+
+  scope :search, lambda { |params|
+    addresses = display
+    addresses = addresses.where("stake_address.view = ?", params[:address]) if params[:address]
+
+    addresses = addresses.where("epoch_stake.amount >= ?", params[:min_ada_amount].to_i * 1_000_000) if params[:min_ada_amount]
+    addresses = addresses.where("epoch_stake.amount <= ?", params[:max_ada_amount].to_i * 1_000_000) if params[:max_ada_amount]
+
+    addresses = addresses.where("epoch_stake.amount >= ?", RateHelper.eur_to_ada(params[:min_ada_amount_in_eur].to_f) * 1_000_000) if params[:min_ada_amount_in_eur]
+    addresses = addresses.where("epoch_stake.amount <= ?", RateHelper.eur_to_ada(params[:max_ada_amount_in_eur].to_f) * 1_000_000) if params[:max_ada_amount_in_eur]
+    addresses = addresses.where("epoch_stake.amount >= ?", RateHelper.usd_to_ada(params[:min_ada_amount_in_usd].to_f) * 1_000_000) if params[:min_ada_amount_in_usd]
+    addresses = addresses.where("epoch_stake.amount <= ?", RateHelper.usd_to_ada(params[:max_ada_amount_in_usd].to_f) * 1_000_000) if params[:max_ada_amount_in_usd]
+    addresses
+  }
 end
